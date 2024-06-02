@@ -84,10 +84,7 @@ model = keras.Sequential([
 
 model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['accuracy'])
 
-
-cp_callback = ModelCheckpoint(filepath="models/checkpoint.keras", save_weights_only=False, verbose=1)
-
-history = model.fit(X_train, y_train, epochs=100, batch_size=64, validation_data=(X_test, y_test), verbose=1, callbacks=[cp_callback])
+history = model.fit(X_train, y_train, epochs=100, batch_size=64, validation_data=(X_test, y_test), verbose=1)
 
 model.save('models/cifar_model_midterm.keras')
 
