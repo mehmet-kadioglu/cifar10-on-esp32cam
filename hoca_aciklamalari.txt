@@ -1,3 +1,3 @@
 # model parametlerini çıkar, 1 bytes mesela her bir parametre için,
 # runtimeda çalıştırması için ne kadar belleğe ihtiyacı var ve parametre değerleri toplamı kadar hafıza,
-# bufferı aoutput shape göre, dataset özellikleri raporda 1, parametreler niye seçildi, metrikleri göster
+# bufferı output shape göre, dataset özellikleri raporda 1, parametreler niye seçildi, metrikleri göster

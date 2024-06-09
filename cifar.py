@@ -44,13 +44,6 @@ print("\n")
 
 
 
-# UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. 
-# When using Sequential models, prefer using an `Input(shape)` object as the 
-# first layer in the model instead.
-# Uyarisi alindigindan dolayi asagidaki sekilde yapildi
-input_shape = (32, 32, 3)
-input_layer = Input(shape=input_shape)
-
 model = keras.Sequential([
     keras.layers.InputLayer(input_shape=(32, 32, 3)),
 
@@ -124,6 +117,23 @@ print(conf_matrix)
 
 
 
+pruning_model = keras.Sequential([
+    keras.layers.InputLayer(input_shape=(32, 32, 3)),
+
+    keras.layers.Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 3)),
+    keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    keras.layers.Dropout(0.25),
+
+    keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'),
+    keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    keras.layers.Dropout(0.25),
+
+    keras.layers.Flatten(),
+    keras.layers.Dense(64, activation='relu'),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(10, activation='softmax')
+])
+
 
 # Pruning
 prune_low_magnitude = tensorflow_model_optimization.sparsity.keras.prune_low_magnitude
@@ -133,7 +143,7 @@ pruning_params = {
                                                              begin_step=2000,
                                                              end_step=10000)
 }
-model_for_pruning = prune_low_magnitude(model, **pruning_params)
+model_for_pruning = prune_low_magnitude(pruning_model, **pruning_params)
 model_for_pruning.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model_for_pruning.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=2, callbacks=[tensorflow_model_optimization.sparsity.keras.UpdatePruningStep()])
 
